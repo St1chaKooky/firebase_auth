@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "443250163052",
+    "project_id": "netschool-a296d",
+    "storage_bucket": "netschool-a296d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443250163052:android:c603b29fae22144444c749",
+        "android_client_info": {
+          "package_name": "com.example.netschool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443250163052-np0m2vevpln6vijgtsvb5h5pvio78hie.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIOeIQXPdyuYPhpGh4VRhGoQMcmxzfdJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443250163052-np0m2vevpln6vijgtsvb5h5pvio78hie.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
