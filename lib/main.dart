@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:netschool/responsive/mobailSreenLayout.dart';
-import 'package:netschool/responsive/responsiveLayout.dart';
-import 'package:netschool/responsive/webScreenLayout.dart';
+// import 'package:netschool/responsive/mobail_sreen_layout.dart';
+// import 'package:netschool/responsive/responsive_layout.dart';
+// import 'package:netschool/responsive/web_screen_layout.dart';
+import 'package:netschool/screens/login_screen.dart';
+import 'package:netschool/screens/siginup_screen.dart';
 import 'package:netschool/utils/colors.dart';
 
 Future main() async {
@@ -30,14 +32,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'NetSchol',
-        theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: mobileBackgroundColor,
-        ),
-        home: const ResponsiveLayout(
-          mobailScreenLayout: MobailScreenLayout(),
-          webScreenLayout: WebScreenLayout(),
-        ));
+      debugShowCheckedModeBanner: false,
+      title: 'NetSchol',
+      theme: ThemeData(scaffoldBackgroundColor: whiteColor),
+      home: const SiginUpScreen(),
+      // const ResponsiveLayout(
+      //   mobailScreenLayout: MobailScreenLayout(),
+      //   webScreenLayout: WebScreenLayout(),
+    );
   }
 }
