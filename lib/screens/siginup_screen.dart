@@ -1,7 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:netschool/resources/auth_methods.dart';
 import 'package:netschool/utils/colors.dart';
 import 'package:netschool/widgets/text_field.dart';
@@ -20,7 +18,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
-  Uint8List? _image;
+  // Uint8List? _image;
   bool _isLoading = false;
 
   @override
@@ -32,12 +30,12 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
     _userNameController.dispose();
   }
 
-  void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = im;
-    });
-  }
+  // void selectImage() async {
+  //   Uint8List im = await pickImage(ImageSource.gallery);
+  //   setState(() {
+  //     _image = im;
+  //   });
+  // }
 
   void signUpUser() async {
     setState(() {
