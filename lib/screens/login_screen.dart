@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:netschool/resources/auth_methods.dart';
+import 'package:netschool/screens/siginup_screen.dart';
+
 import 'package:netschool/utils/colors.dart';
+import 'package:netschool/utils/image_utils.dart';
 import 'package:netschool/widgets/text_field.dart';
+
+import '../responsive/mobail_sreen_layout.dart';
+import '../responsive/responsive_layout.dart';
+import '../responsive/web_screen_layout.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,12 +20,38 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+        email: _emailController.text, password: _passwordController.text);
+    if (res == "succes") {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+                mobailScreenLayout: MobailScreenLayout(),
+                webScreenLayout: WebScreenLayout(),
+              )));
+    } else {
+      showSnakBar(res, context);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void navigateToSignUp() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const SiginUpScreen()));
   }
 
   @override
@@ -56,12 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 12,
               ),
               InkWell(
-                onTap: () => print('1'),
+                onTap: () => loginUser,
                 child: Container(
                     width: double.infinity,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 30),
+                        vertical: 14, horizontal: 30),
                     decoration: const ShapeDecoration(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -69,10 +103,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         color: blueColor),
-                    child: const Text(
-                      'Log in',
-                      style: TextStyle(color: Colors.white),
-                    )),
+                    child: _isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: whiteColor,
+                            ),
+                          )
+                        : const Text(
+                            'Log in',
+                            style: TextStyle(color: Colors.white),
+                          )),
               ),
               Flexible(
                 flex: 2,
@@ -86,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text('Don`t have accaount? '),
                   ),
                   GestureDetector(
-                    onTap: () => print('2'),
+                    onTap: navigateToSignUp,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: const Text(

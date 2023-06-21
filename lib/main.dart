@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:netschool/responsive/mobail_sreen_layout.dart';
-// import 'package:netschool/responsive/responsive_layout.dart';
-// import 'package:netschool/responsive/web_screen_layout.dart';
+import 'package:netschool/responsive/mobail_sreen_layout.dart';
+
+import 'package:netschool/responsive/responsive_layout.dart';
+import 'package:netschool/responsive/web_screen_layout.dart';
 import 'package:netschool/screens/login_screen.dart';
-import 'package:netschool/screens/siginup_screen.dart';
+
 import 'package:netschool/utils/colors.dart';
 
 Future main() async {
@@ -35,10 +37,30 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'NetSchol',
       theme: ThemeData(scaffoldBackgroundColor: whiteColor),
-      home: const SiginUpScreen(),
-      // const ResponsiveLayout(
-      //   mobailScreenLayout: MobailScreenLayout(),
-      //   webScreenLayout: WebScreenLayout(),
+      home: LoginScreen(),
+      // StreamBuilder(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.active) {
+      //       if (snapshot.hasData) {
+      //         return const ResponsiveLayout(
+      //           mobailScreenLayout: MobailScreenLayout(),
+      //           webScreenLayout: WebScreenLayout(),
+      //         );
+      //       } else if (snapshot.hasError) {
+      //         return Center(
+      //           child: Text('${snapshot.error}'),
+      //         );
+      //       }
+      //     }
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return const Center(
+      //         child: CircularProgressIndicator(color: blackColor),
+      //       );
+      //     }
+      //     return const LoginScreen();
+      //   },
+      // ),
     );
   }
 }

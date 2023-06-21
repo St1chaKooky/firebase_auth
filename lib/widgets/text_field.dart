@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/colors.dart';
+
 class TextFieldInput extends StatelessWidget {
   final TextEditingController textEditingController;
   final bool isPassword;
@@ -22,13 +24,13 @@ class TextFieldInput extends StatelessWidget {
     return TextField(
       controller: textEditingController,
       decoration: InputDecoration(
-        fillColor: Color.fromARGB(255, 228, 227, 227),
+        fillColor: fieldColor,
         hintText: hintText,
         border: inputBorder,
         focusedBorder: inputBorder,
         enabledBorder: inputBorder,
         filled: true,
-        contentPadding: const EdgeInsets.all(8),
+        contentPadding: const EdgeInsets.all(12),
       ),
       keyboardType: textInputType,
       obscureText: isPassword,
