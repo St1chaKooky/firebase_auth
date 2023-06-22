@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 // import 'package:image_picker/image_picker.dart';
@@ -53,7 +53,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
       password: _passwordController.text,
       username: _userNameController.text,
       bio: _bioController.text,
-      file: _image,
+      // file: _image,
     );
     setState(() {
       _isLoading = false;
@@ -88,7 +88,12 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
                 flex: 2,
                 child: Container(),
               ),
-              const Text('SignUp'),
+              const Text(
+                'SignUp',
+                style: TextStyle(
+                  fontSize: 32,
+                ),
+              ),
               const SizedBox(
                 height: 64,
               ),
@@ -146,7 +151,9 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
                             ),
                           )
                         : const Text('Sign up',
-                            style: TextStyle(color: Colors.white))),
+                            style: TextStyle(
+                              color: Colors.white,
+                            ))),
               ),
               Flexible(
                 flex: 2,
@@ -165,13 +172,16 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: const Text(
                         'Login',
+                        style: TextStyle(
+                            fontFamily: 'WorkSans',
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(
-                height: 10,
+                height: 15,
               ),
             ],
           ),

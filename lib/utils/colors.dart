@@ -5,4 +5,4 @@ const mobileSearchColor = Color.fromRGBO(124, 124, 124, 1);
 const blueColor = Color.fromRGBO(25, 0, 255, 1);
 const secondaryColor = Colors.grey;
 const blackColor = Colors.black;
-const fieldColor = Color.fromARGB(255, 228, 227, 227);
+const fieldColor = Color.fromARGB(255, 245, 244, 244);

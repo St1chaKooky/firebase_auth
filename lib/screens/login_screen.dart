@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:netschool/resources/auth_methods.dart';
 import 'package:netschool/screens/siginup_screen.dart';
 
 import 'package:netschool/utils/colors.dart';
 import 'package:netschool/utils/image_utils.dart';
+import 'package:netschool/utils/size.dart';
 import 'package:netschool/widgets/text_field.dart';
 
 import '../responsive/mobail_sreen_layout.dart';
@@ -68,7 +70,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 2,
                 child: Container(),
               ),
-              const Text('Log in'),
+              // SizedBox(
+              //   height: 200,
+              // ),
+              const Text(
+                'Log in',
+                style: TextStyle(
+                  fontSize: 32,
+                ),
+              ),
               const SizedBox(
                 height: 64,
               ),
@@ -111,19 +121,26 @@ class _LoginScreenState extends State<LoginScreen> {
                           )
                         : const Text(
                             'Log in',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           )),
               ),
               Flexible(
                 flex: 2,
                 child: Container(),
               ),
+              // SizedBox(
+              //   height: 300,
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: const Text('Don`t have accaount? '),
+                    child: const Text(
+                      'Don`t have accaount? ',
+                    ),
                   ),
                   GestureDetector(
                     onTap: navigateToSignUp,
@@ -131,13 +148,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: const Text(
                         'Sign Up',
+                        style: TextStyle(
+                            fontFamily: 'WorkSans',
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(
-                height: 10,
+                height: 15,
               ),
             ],
           ),

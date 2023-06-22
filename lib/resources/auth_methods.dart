@@ -16,7 +16,7 @@ class AuthMethods {
     required String password,
     required String username,
     required String bio,
-    Uint8List? file, // Обновленная сигнатура поля file
+    // Uint8List? file, // Обновленная сигнатура поля file
   }) async {
     String res = "Some error occured";
     try {
@@ -30,15 +30,15 @@ class AuthMethods {
 
         print(cred.user!.uid);
 
-        String photoUrl = await StorageMethods()
-            .uploadImageToStorage('profilePics', file!, false);
+        // String photoUrl = await StorageMethods()
+        //     .uploadImageToStorage('profilePics', file!, false);
 
         model.User user = model.User(
           username: username,
           uid: cred.user!.uid,
           email: email,
           bio: bio,
-          photoUrl: photoUrl,
+          // photoUrl: photoUrl,
           following: [],
           followers: [],
         );

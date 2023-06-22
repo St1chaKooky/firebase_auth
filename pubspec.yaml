@@ -22,6 +22,7 @@ dependencies:
   flutter_staggered_grid_view: ^0.6.2
   provider: ^6.0.5
   image_picker: ^0.8.8
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:
@@ -29,7 +30,26 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
+
+  # указываем, что мы используем MaterialApp иконки и наше
+  # приложение соответствует Material Design
   uses-material-design: true
+
+
+  # fonts:
+  #   - family: WorkSans
+  #     fonts:
+  #       - asset: fonts/WorkSans-Bold.ttf
+  #         weight: 700
+  #       - asset: fonts/WorkSans-ExtraBold.ttf
+  #         weight: 800
+  #       - asset: fonts/WorkSans-Light.ttf
+  #         weight: 300
+  #       - asset: fonts/WorkSans-Regular.ttf
+  #         weight: 400
+  #       - asset: fonts/WorkSans-SemiBold.ttf
+  #         weight: 600
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
