@@ -53,7 +53,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
       password: _passwordController.text,
       username: _userNameController.text,
       bio: _bioController.text,
-      // file: _image,
+      file: _image,
     );
     setState(() {
       _isLoading = false;

@@ -38,11 +38,13 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = await AuthMethods().loginUser(
         email: _emailController.text, password: _passwordController.text);
     if (res == "succes") {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const ResponsiveLayout(
-                mobailScreenLayout: MobailScreenLayout(),
-                webScreenLayout: WebScreenLayout(),
-              )));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+                  mobailScreenLayout: MobailScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                )),
+      );
     } else {
       showSnakBar(res, context);
     }
@@ -100,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 12,
               ),
               InkWell(
-                onTap: () => loginUser,
+                onTap: () => loginUser(),
                 child: Container(
                     width: double.infinity,
                     alignment: Alignment.center,
