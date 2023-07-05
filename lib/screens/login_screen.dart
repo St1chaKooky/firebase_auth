@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:netschool/resources/auth_methods.dart';
 import 'package:netschool/screens/siginup_screen.dart';
 
 import 'package:netschool/utils/colors.dart';
 import 'package:netschool/utils/image_utils.dart';
-import 'package:netschool/utils/size.dart';
+
 import 'package:netschool/widgets/text_field.dart';
 
 import '../responsive/mobail_sreen_layout.dart';

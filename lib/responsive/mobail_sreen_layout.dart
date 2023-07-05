@@ -1,11 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:netschool/providers/user_provider.dart';
-import 'package:netschool/resources/auth_methods.dart';
-import 'package:provider/provider.dart';
-import '../model/user.dart' as model;
+// import 'package:provider/provider.dart';
+// import '../model/user.dart' as model;
 import '../utils/colors.dart';
 
 class MobailScreenLayout extends StatefulWidget {
@@ -54,7 +50,7 @@ class _MobailScreenLayoutState extends State<MobailScreenLayout> {
 
     return Scaffold(
       body: PageView(
-        children: [
+        children: const [
           Text('main'),
           Text('search'),
           Text('add'),
@@ -79,7 +75,7 @@ class _MobailScreenLayoutState extends State<MobailScreenLayout> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.home,
+              Icons.search,
               color: _page == 1 ? blueColor : secondaryColor,
             ),
             label: '',
@@ -87,7 +83,7 @@ class _MobailScreenLayoutState extends State<MobailScreenLayout> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.home,
+              Icons.add,
               color: _page == 2 ? blueColor : secondaryColor,
             ),
             label: '',
