@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:netschool/screens/profile_screen.dart';
 // import 'package:provider/provider.dart';
 // import '../model/user.dart' as model;
+import '../screens/seacr_screen.dart';
 import '../utils/colors.dart';
 
 class MobailScreenLayout extends StatefulWidget {
@@ -50,17 +52,16 @@ class _MobailScreenLayoutState extends State<MobailScreenLayout> {
 
     return Scaffold(
       body: PageView(
-        children: const [
-          Text('main'),
-          Text('search'),
-          Text('add'),
-          Text('reels'),
-          Text('account'),
-        ],
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
-        onPageChanged:
-            onPageChanged, //функция которая во время стейта предает page
+        onPageChanged: onPageChanged,
+        children: const [
+          Text('main'),
+          SearchScreen(),
+          Text('add'),
+          Text('reels'),
+          ProfileScreen(),
+        ], //функция которая во время стейта предает page
       ),
       bottomNavigationBar: CupertinoTabBar(
         backgroundColor: whiteColor,
