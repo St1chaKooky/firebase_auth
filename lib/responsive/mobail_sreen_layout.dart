@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netschool/screens/profile_screen.dart';
@@ -55,12 +57,17 @@ class _MobailScreenLayoutState extends State<MobailScreenLayout> {
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: onPageChanged,
-        children: const [
-          Text('main'),
-          SearchScreen(),
-          Text('add'),
-          Text('reels'),
-          ProfileScreen(),
+        children: [
+          const Text(
+            'main',
+            style: TextStyle(fontFamily: 'WorkSans'),
+          ),
+          const SearchScreen(),
+          const Text('add'),
+          const Text('reels'),
+          ProfileScreen(
+            uid: FirebaseAuth.instance.currentUser!.uid,
+          ),
         ], //функция которая во время стейта предает page
       ),
       bottomNavigationBar: CupertinoTabBar(

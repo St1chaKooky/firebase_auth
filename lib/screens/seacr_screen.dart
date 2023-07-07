@@ -24,14 +24,40 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: whiteColor,
-        title: TextFormField(
-          decoration: const InputDecoration(labelText: 'Search for a user'),
-          onFieldSubmitted: (String _) {
-            print(_);
-          },
+        title: Form(
+          child: TextFormField(
+            controller: searchController,
+            decoration:
+                const InputDecoration(labelText: 'Search for a user g...'),
+            // onFieldSubmitted: (String _) {
+            //   setState(() {
+            //     isShowUsers = true;
+            //   });
+            // },
+          ),
         ),
       ),
-      // body: FutureBuilder(future: FirebaseFirestore.instance.collection('users').where('username').get(),),
+      body: FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('users')
+            .where(
+              'username',
+              isGreaterThanOrEqualTo: searchController.text,
+            )
+            .get(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+              itemCount: (snapshot.data! as dynamic).docs.length,
+              itemBuilder: ((context, index) {
+                return ListTile();
+              }));
+        },
+      ),
     );
   }
 }

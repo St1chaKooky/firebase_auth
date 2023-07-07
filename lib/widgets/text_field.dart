@@ -26,6 +26,9 @@ class TextFieldInput extends StatelessWidget {
       decoration: InputDecoration(
         fillColor: fieldColor,
         hintText: hintText,
+        hintStyle: TextStyle(
+            // fontFamily: 'WorkSans',
+            ),
         border: inputBorder,
         focusedBorder: inputBorder,
         enabledBorder: inputBorder,

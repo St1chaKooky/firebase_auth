@@ -24,7 +24,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
-  Uint8List? _image;
+  // Uint8List? _image;
   bool _isLoading = false;
 
   @override
@@ -36,12 +36,12 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
     _userNameController.dispose();
   }
 
-  void selectImage() async {
-    Uint8List? im = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = im;
-    });
-  }
+  // void selectImage() async {
+  //   Uint8List? im = await pickImage(ImageSource.gallery);
+  //   setState(() {
+  //     _image = im;
+  //   });
+  // }
 
   void signUpUser() async {
     setState(() {
@@ -52,7 +52,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
       password: _passwordController.text,
       username: _userNameController.text,
       bio: _bioController.text,
-      file: _image,
+      // file: _image,
     );
     setState(() {
       _isLoading = false;
@@ -151,6 +151,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
                           )
                         : const Text('Sign up',
                             style: TextStyle(
+                              // fontFamily: 'WorkSans',
                               color: Colors.white,
                             ))),
               ),
@@ -163,7 +164,10 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: const Text('Have an account? '),
+                    child: const Text('Have an account? ',
+                        style: TextStyle(
+                            // fontFamily: 'WorkSans',
+                            )),
                   ),
                   GestureDetector(
                     onTap: navigateToLogIn,
@@ -172,7 +176,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
                       child: const Text(
                         'Login',
                         style: TextStyle(
-                            fontFamily: 'WorkSans',
+                            // fontFamily: 'WorkSans',
                             fontWeight: FontWeight.w500),
                       ),
                     ),

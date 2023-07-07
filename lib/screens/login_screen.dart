@@ -124,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         : const Text(
                             'Log in',
                             style: TextStyle(
+                              // fontFamily: 'WorkSans',
                               color: Colors.white,
                             ),
                           )),
@@ -151,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text(
                         'Sign Up',
                         style: TextStyle(
-                            fontFamily: 'WorkSans',
+                            // fontFamily: 'WorkSans',
                             fontWeight: FontWeight.w500),
                       ),
                     ),

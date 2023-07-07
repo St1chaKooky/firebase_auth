@@ -38,7 +38,7 @@ class AuthMethods {
 
         print(cred.user!.uid);
 
-        String photoUrl = "";
+        String photoUrl = "https://i.stack.imgur.com/l60Hf.png";
         if (file != null) {
           photoUrl = await StorageMethods()
               .uploadImageToStorage('profilePics', file, false);
