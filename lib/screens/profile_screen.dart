@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:netschool/resources/auth_methods.dart';
+import 'package:netschool/screens/login_screen.dart';
 
 import 'package:netschool/utils/colors.dart';
 import 'package:netschool/utils/image_utils.dart';
@@ -9,7 +10,7 @@ import '../widgets/standart_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
-  ProfileScreen({super.key, required this.uid});
+  const ProfileScreen({super.key, required this.uid});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -42,11 +43,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          userData['bio'],
+          userData['bio'] ?? '...',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: false,
         backgroundColor: whiteColor,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                      height: 400,
+                      child: Column(),
+                    );
+                  });
+            },
+            icon: Icon(Icons.menu),
+            color: blackColor,
+          )
+        ],
       ),
       body: ListView(children: [
         Padding(
@@ -58,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: 20,
               ),
               CircleAvatar(
-                radius: 64,
+                radius: 54,
                 backgroundImage: NetworkImage(userData['photoUrl']),
                 backgroundColor: Colors.red,
               ),
@@ -68,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Text(
                 userData['username'],
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -79,12 +96,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  const SizedBox(
+                    width: 10,
+                  ),
                   Expanded(
                     child: buildStatColumn(10, 'posts'),
                   ),
                   buildStatColumn(10, 'followers'),
                   Expanded(
                     child: buildStatColumn(10, 'folowing'),
+                  ),
+                  const SizedBox(
+                    width: 10,
                   ),
                 ],
               ),
@@ -95,10 +118,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   StandartButton(
-                    text: 'Изменить профиль',
+                    text: 'Выйти из аккаунта',
                     backgroundColor: greyButtonColor,
                     textColor: greyButtonColorText,
-                    function: () {},
+                    function: () async {
+                      await AuthMethods().signOut();
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const LoginScreen()));
+                    },
                   ),
                   SizedBox(
                     width: 10,
@@ -126,14 +153,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Text(
           num.toString(),
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 17,
             fontWeight: FontWeight.w600,
           ),
         ),
         Text(
           label,
           style: const TextStyle(
-            fontSize: 15,
+            fontSize: 14,
             fontWeight: FontWeight.w300,
             // fontFamily: 'WorkSans'
           ),
