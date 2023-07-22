@@ -17,10 +17,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  late bool isLoading;
   var userData = {};
   @override
   void initState() {
     super.initState();
+    isLoading = true;
     getData();
   }
 
@@ -31,7 +33,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .doc(widget.uid)
           .get();
       userData = userSnap.data()!;
-      setState(() {});
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
       showSnakBar(e.toString(), context);
     }
@@ -44,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         elevation: 0,
         title: Text(
           userData['bio'] ?? '...',
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: false,
         backgroundColor: whiteColor,
@@ -54,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return SizedBox(
+                    return const SizedBox(
                       height: 400,
                       child: Column(),
                     );
@@ -65,83 +69,88 @@ class _ProfileScreenState extends State<ProfileScreen> {
           )
         ],
       ),
-      body: ListView(children: [
-        Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              CircleAvatar(
-                radius: 54,
-                backgroundImage: NetworkImage(userData['photoUrl']),
-                backgroundColor: Colors.red,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(
-                userData['username'],
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(children: [
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CircleAvatar(
+                      radius: 54,
+                      backgroundImage: NetworkImage(userData['photoUrl']),
+                      backgroundColor: Colors.red,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      userData['username'],
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: buildStatColumn(10, 'posts'),
+                        ),
+                        buildStatColumn(10, 'followers'),
+                        Expanded(
+                          child: buildStatColumn(10, 'folowing'),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        StandartButton(
+                          text: 'Выйти из аккаунта',
+                          backgroundColor: greyButtonColor,
+                          textColor: greyButtonColorText,
+                          function: () async {
+                            await AuthMethods().signOut();
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()));
+                          },
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        StandartButton(
+                          text: 'Изменить профиль',
+                          backgroundColor: greyButtonColor,
+                          textColor: greyButtonColorText,
+                          function: () {},
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: buildStatColumn(10, 'posts'),
-                  ),
-                  buildStatColumn(10, 'followers'),
-                  Expanded(
-                    child: buildStatColumn(10, 'folowing'),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  StandartButton(
-                    text: 'Выйти из аккаунта',
-                    backgroundColor: greyButtonColor,
-                    textColor: greyButtonColorText,
-                    function: () async {
-                      await AuthMethods().signOut();
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const LoginScreen()));
-                    },
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  StandartButton(
-                    text: 'Изменить профиль',
-                    backgroundColor: greyButtonColor,
-                    textColor: greyButtonColorText,
-                    function: () {},
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ]),
+            ]),
     );
   }
 
