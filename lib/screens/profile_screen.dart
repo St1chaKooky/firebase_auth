@@ -17,8 +17,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late bool isLoading;
-  var userData = {};
+  late bool isLoading = true;
+  Map<dynamic, dynamic> userData = {};
   @override
   void initState() {
     super.initState();
@@ -47,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          userData['bio'] ?? '...',
+          userData['bio'] ?? ' ',
           style: const TextStyle(color: Colors.black),
         ),
         centerTitle: false,
@@ -82,16 +82,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    CircleAvatar(
-                      radius: 54,
-                      backgroundImage: NetworkImage(userData['photoUrl']),
-                      backgroundColor: Colors.red,
-                    ),
+                    userData['photoUrl'] != null
+                        ? CircleAvatar(
+                            radius: 54,
+                            backgroundImage:
+                                NetworkImage(userData?['photoUrl'] ?? ' '),
+                            backgroundColor:
+                                const Color.fromARGB(255, 177, 177, 177),
+                          )
+                        : CircleAvatar(
+                            radius: 54,
+                            backgroundColor:
+                                const Color.fromARGB(255, 177, 177, 177),
+                          ),
                     const SizedBox(
                       height: 15,
                     ),
                     Text(
-                      userData['username'],
+                      userData['username'] ?? ' ',
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,

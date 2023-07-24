@@ -8,7 +8,6 @@ import 'package:netschool/responsive/mobail_sreen_layout.dart';
 import 'package:netschool/responsive/responsive_layout.dart';
 import 'package:netschool/responsive/web_screen_layout.dart';
 import 'package:netschool/screens/login_screen.dart';
-
 import 'package:netschool/utils/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +25,7 @@ Future main() async {
   } else {
     await Firebase.initializeApp();
   }
+
   runApp(const MyApp());
 }
 

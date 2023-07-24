@@ -8,6 +8,7 @@ import 'package:netschool/widgets/text_field.dart';
 import '../responsive/mobail_sreen_layout.dart';
 import '../responsive/responsive_layout.dart';
 import '../responsive/web_screen_layout.dart';
+import '../utils/dimensions.dart';
 import '../utils/image_utils.dart';
 
 class SiginUpScreen extends StatefulWidget {
@@ -23,7 +24,8 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   // Uint8List? _image;
-  bool _isLoading = false;
+  bool _isLoginLoading = false;
+  bool _isGoogleLoginLoading = false;
 
   @override
   void dispose() {
@@ -43,7 +45,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
 
   void signUpUser() async {
     setState(() {
-      _isLoading = true;
+      _isLoginLoading = true;
     });
     String res = await AuthMethods().siginUpUser(
       email: _emailController.text,
@@ -53,7 +55,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
       // file: _image,
     );
     setState(() {
-      _isLoading = false;
+      _isLoginLoading = false;
     });
     if (res != 'succes') {
       showSnakBar(res, context);
@@ -66,6 +68,27 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
     }
   }
 
+  void loginUserGoogle() async {
+    setState(() {
+      _isGoogleLoginLoading = true;
+    });
+    String res = await AuthMethods().signGoogle();
+    if (res == "succes") {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+                  mobailScreenLayout: MobailScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                )),
+      );
+    } else {
+      showSnakBar(res, context);
+    }
+    setState(() {
+      _isGoogleLoginLoading = false;
+    });
+  }
+
   void navigateToLogIn() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
@@ -76,7 +99,10 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: MediaQuery.of(context).size.width > webScreenSize
+              ? EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 3)
+              : const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -141,17 +167,72 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
                           ),
                         ),
                         color: blueColor),
-                    child: _isLoading
+                    child: _isLoginLoading
                         ? const Center(
-                            child: CircularProgressIndicator(
+                            child: SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: Center(
+                                child: CircularProgressIndicator(
+                              strokeWidth: 2,
                               color: whiteColor,
-                            ),
-                          )
+                            )),
+                          ))
                         : const Text('Sign up',
                             style: TextStyle(
                               // fontFamily: 'WorkSans',
                               color: Colors.white,
                             ))),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              InkWell(
+                onTap: () => loginUserGoogle(),
+                child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 30),
+                    decoration: const ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6),
+                          ),
+                          side: BorderSide(color: secondaryColor, width: 1.3),
+                        ),
+                        color: whiteColor),
+                    child: _isGoogleLoginLoading
+                        ? const Center(
+                            child: SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: Center(
+                                child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: blueColor,
+                            )),
+                          ))
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'images/googleLogo.png',
+                                width: 17,
+                                height: 17,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Text(
+                                'Continue with Google',
+                                style: TextStyle(
+                                  // fontFamily: 'WorkSans',
+                                  color: greyButtonColorText,
+                                ),
+                              ),
+                            ],
+                          )),
               ),
               Flexible(
                 flex: 2,
@@ -174,8 +255,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
                       child: const Text(
                         'Login',
                         style: TextStyle(
-                            // fontFamily: 'WorkSans',
-                            fontWeight: FontWeight.w500),
+                            color: blueColor, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
