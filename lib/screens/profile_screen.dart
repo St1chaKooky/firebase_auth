@@ -18,26 +18,25 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late bool isLoading = true;
-  Map<dynamic, dynamic> userData = {};
+  late Future<Map<String, dynamic>> _userDataFuture;
+
   @override
   void initState() {
     super.initState();
-    isLoading = true;
-    getData();
+    _userDataFuture = getData();
   }
 
-  getData() async {
+  Future<Map<String, dynamic>> getData() async {
     try {
       var userSnap = await FirebaseFirestore.instance
           .collection('users')
           .doc(widget.uid)
           .get();
-      userData = userSnap.data()!;
-      setState(() {
-        isLoading = false;
-      });
+      return userSnap.data() ??
+          {}; // Возвращаем пустой Map, если данные не найдены
     } catch (e) {
-      showSnakBar(e.toString(), context);
+      showSnackBar(e.toString(), context);
+      return {}; // Возвращаем пустой Map, если произошла ошибка
     }
   }
 
@@ -46,9 +45,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-          userData['bio'] ?? ' ',
-          style: const TextStyle(color: Colors.black),
+        title: FutureBuilder<Map<String, dynamic>>(
+          future: _userDataFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SizedBox.shrink();
+            } else {
+              final userData = snapshot.data;
+              return Text(
+                userData?['bio'] ?? ' ',
+                style: const TextStyle(color: Colors.black),
+              );
+            }
+          },
         ),
         centerTitle: false,
         backgroundColor: whiteColor,
@@ -69,96 +78,112 @@ class _ProfileScreenState extends State<ProfileScreen> {
           )
         ],
       ),
-      body: isLoading
-          ? const Center(
+      body: FutureBuilder<Map<String, dynamic>>(
+        future: _userDataFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
               child: CircularProgressIndicator(),
-            )
-          : ListView(children: [
-              Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    userData['photoUrl'] != null
-                        ? CircleAvatar(
-                            radius: 54,
-                            backgroundImage:
-                                NetworkImage(userData?['photoUrl'] ?? ' '),
-                            backgroundColor:
-                                const Color.fromARGB(255, 177, 177, 177),
-                          )
-                        : CircleAvatar(
-                            radius: 54,
-                            backgroundColor:
-                                const Color.fromARGB(255, 177, 177, 177),
-                          ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      userData['username'] ?? ' ',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            final userData = snapshot.data;
+            return ListView(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const SizedBox(
-                          width: 10,
+                      userData?['photoUrl'] != null
+                          ? CircleAvatar(
+                              radius: 54,
+                              backgroundImage: NetworkImage(
+                                userData?['photoUrl'] ?? '',
+                              ),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 177, 177, 177),
+                            )
+                          : CircleAvatar(
+                              radius: 54,
+                              backgroundColor:
+                                  const Color.fromARGB(255, 177, 177, 177),
+                            ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        userData?['username'] ?? '',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
                         ),
-                        Expanded(
-                          child: buildStatColumn(10, 'posts'),
-                        ),
-                        buildStatColumn(10, 'followers'),
-                        Expanded(
-                          child: buildStatColumn(10, 'folowing'),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        StandartButton(
-                          text: 'Выйти из аккаунта',
-                          backgroundColor: greyButtonColor,
-                          textColor: greyButtonColorText,
-                          function: () async {
-                            await AuthMethods().signOut();
-                            Navigator.of(context).pushReplacement(
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: buildStatColumn(10, 'posts'),
+                          ),
+                          buildStatColumn(10, 'followers'),
+                          Expanded(
+                            child: buildStatColumn(10, 'following'),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          StandartButton(
+                            text: 'Выйти из аккаунта',
+                            backgroundColor: greyButtonColor,
+                            textColor: greyButtonColorText,
+                            function: () async {
+                              await AuthMethods().signOut();
+                              Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()));
-                          },
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        StandartButton(
-                          text: 'Изменить профиль',
-                          backgroundColor: greyButtonColor,
-                          textColor: greyButtonColorText,
-                          function: () {},
-                        ),
-                      ],
-                    ),
-                  ],
+                                  builder: (context) => const LoginScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          StandartButton(
+                            text: 'Изменить профиль',
+                            backgroundColor: greyButtonColor,
+                            textColor: greyButtonColorText,
+                            function: () {},
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            );
+          }
+        },
+      ),
     );
   }
 

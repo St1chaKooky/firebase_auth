@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 )),
       );
     } else {
-      showSnakBar(res, context);
+      showSnackBar(res, context);
     }
     setState(() {
       _isLoginLoading = false;
@@ -56,27 +56,29 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginUserGoogle() async {
-    if (mounted) {
-      setState(() {
-        _isGoogleLoginLoading = true;
-      });
-      String res = await AuthMethods().signGoogle();
-      if (res == "succes") {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-              builder: (context) => const ResponsiveLayout(
-                    mobailScreenLayout: MobailScreenLayout(),
-                    webScreenLayout: WebScreenLayout(),
-                  )),
-        );
-      } else {
-        showSnakBar(res, context);
-      }
+    setState(() {
+      _isGoogleLoginLoading = true;
+    });
+    String res = await AuthMethods().signGoogle();
+    if (res == "succes") {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+                  mobailScreenLayout: MobailScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                )),
+      );
+    } else {
+      showSnackBar(res, context);
       setState(() {
         _isGoogleLoginLoading = false;
       });
-    } else
       return;
+    }
+    setState(() {
+      _isGoogleLoginLoading = false;
+    });
+    return;
   }
 
   void navigateToSignUp() {

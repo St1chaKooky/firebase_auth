@@ -58,7 +58,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
       _isLoginLoading = false;
     });
     if (res != 'succes') {
-      showSnakBar(res, context);
+      showSnackBar(res, context);
     } else {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => const ResponsiveLayout(
@@ -82,7 +82,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
                 )),
       );
     } else {
-      showSnakBar(res, context);
+      showSnackBar(res, context);
     }
     setState(() {
       _isGoogleLoginLoading = false;
@@ -110,12 +110,6 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
               Flexible(
                 flex: 2,
                 child: Container(),
-              ),
-              const Text(
-                'SignUp',
-                style: TextStyle(
-                  fontSize: 32,
-                ),
               ),
               const SizedBox(
                 height: 64,
@@ -262,7 +256,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
                 ],
               ),
               const SizedBox(
-                height: 15,
+                height: 10,
               ),
             ],
           ),
