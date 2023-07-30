@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:netschool/resources/auth_methods.dart';
 import 'package:netschool/screens/login_screen.dart';
 import 'package:netschool/utils/colors.dart';
 import 'package:netschool/widgets/text_field.dart';
+import 'package:flutter/services.dart';
 
 import '../responsive/mobail_sreen_layout.dart';
 import '../responsive/responsive_layout.dart';
@@ -36,13 +39,6 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
     _userNameController.dispose();
   }
 
-  // void selectImage() async {
-  //   Uint8List? im = await pickImage(ImageSource.gallery);
-  //   setState(() {
-  //     _image = im;
-  //   });
-  // }
-
   void signUpUser() async {
     setState(() {
       _isLoginLoading = true;
@@ -57,7 +53,7 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
     setState(() {
       _isLoginLoading = false;
     });
-    if (res != 'succes') {
+    if (res != "succes") {
       showSnackBar(res, context);
     } else {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -72,18 +68,39 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
     setState(() {
       _isGoogleLoginLoading = true;
     });
-    String res = await AuthMethods().signGoogle();
-    if (res == "succes") {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
+
+    try {
+      String res = await AuthMethods().signGoogle();
+
+      if (res == "succes") {
+        // Вход был успешным, выполните необходимые действия.
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
             builder: (context) => const ResponsiveLayout(
-                  mobailScreenLayout: MobailScreenLayout(),
-                  webScreenLayout: WebScreenLayout(),
-                )),
-      );
-    } else {
-      showSnackBar(res, context);
+              mobailScreenLayout: MobailScreenLayout(),
+              webScreenLayout: WebScreenLayout(),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      // Возникло исключение, обработаем различные типы ошибок.
+      if (e is PlatformException) {
+        // Это исключение PlatformException, например, из-за отмены входа через Google.
+        showSnackBar("Вход через Google отменен", context);
+      } else if (e is SocketException) {
+        // Это исключение SocketException, возникает при проблемах с сетью.
+        showSnackBar(
+            "Ошибка сети. Проверьте подключение к интернету.", context);
+      } else {
+        // Это другое исключение, которое мы не предвидим. Обработайте его по своему усмотрению.
+        showSnackBar(
+            "Произошла непредвиденная ошибка. Повторите попытку позже.",
+            context);
+      }
+      // Можно также добавить блок catch для других типов исключений, если необходимо.
     }
+
     setState(() {
       _isGoogleLoginLoading = false;
     });

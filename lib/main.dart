@@ -10,9 +10,14 @@ import 'package:netschool/responsive/web_screen_layout.dart';
 import 'package:netschool/screens/login_screen.dart';
 import 'package:netschool/utils/colors.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   if (kIsWeb) {
     await Firebase.initializeApp(
         options: const FirebaseOptions(

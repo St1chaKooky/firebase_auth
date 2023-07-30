@@ -10,14 +10,13 @@ import '../widgets/standart_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
-  const ProfileScreen({super.key, required this.uid});
+  const ProfileScreen({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late bool isLoading = true;
   late Future<Map<String, dynamic>> _userDataFuture;
 
   @override
@@ -52,10 +51,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return const SizedBox.shrink();
             } else {
               final userData = snapshot.data;
-              return Text(
-                userData?['bio'] ?? ' ',
-                style: const TextStyle(color: Colors.black),
-              );
+              if (userData != null && userData.containsKey('bio')) {
+                return Text(
+                  userData['bio'],
+                  style: const TextStyle(color: Colors.black),
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
             }
           },
         ),
@@ -65,13 +68,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           IconButton(
             onPressed: () {
               showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const SizedBox(
-                      height: 400,
-                      child: Column(),
-                    );
-                  });
+                context: context,
+                builder: (BuildContext context) {
+                  return const SizedBox(
+                    height: 400,
+                    child: Column(),
+                  );
+                },
+              );
             },
             icon: Icon(Icons.menu),
             color: blackColor,
@@ -91,6 +95,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           } else {
             final userData = snapshot.data;
+            if (userData == null || !userData.containsKey('username')) {
+              // Обработка ситуации, если userData является null или не содержит нужных полей
+              return const Center(
+                child: Text('Ошибка: отсутствует информация о пользователе'),
+              );
+            }
+
             return ListView(
               children: [
                 Padding(
@@ -100,25 +111,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      userData?['photoUrl'] != null
+                      userData['photoUrl'] != null
                           ? CircleAvatar(
                               radius: 54,
                               backgroundImage: NetworkImage(
-                                userData?['photoUrl'] ?? '',
+                                userData['photoUrl'],
                               ),
                               backgroundColor:
                                   const Color.fromARGB(255, 177, 177, 177),
                             )
-                          : CircleAvatar(
+                          : const CircleAvatar(
                               radius: 54,
                               backgroundColor:
-                                  const Color.fromARGB(255, 177, 177, 177),
+                                  Color.fromARGB(255, 143, 143, 143),
                             ),
                       const SizedBox(
                         height: 15,
                       ),
                       Text(
-                        userData?['username'] ?? '',
+                        userData['username'] ?? '',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
@@ -135,11 +146,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 10,
                           ),
                           Expanded(
-                            child: buildStatColumn(10, 'posts'),
+                            child: buildStatColumn(
+                              10,
+                              'posts',
+                            ),
                           ),
-                          buildStatColumn(10, 'followers'),
+                          buildStatColumn(
+                            10,
+                            'followers',
+                          ),
                           Expanded(
-                            child: buildStatColumn(10, 'following'),
+                            child: buildStatColumn(
+                              10,
+                              'following',
+                            ),
                           ),
                           const SizedBox(
                             width: 10,
@@ -204,10 +224,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w300,
-            // fontFamily: 'WorkSans'
           ),
-        )
+        ),
       ],
     );
+  }
+
+  void showSnackBar(String message, BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 2),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

@@ -29,12 +29,11 @@ class AuthMethods {
   }) async {
     String res = "Some error occured";
     try {
-      if (email.isNotEmpty &&
-          password.isNotEmpty &&
-          username.isNotEmpty &&
-          bio.isNotEmpty &&
-          password.length >= 6 &&
-          password.length <= 20) {
+      if ((email.isNotEmpty ||
+              password.isNotEmpty ||
+              username.isNotEmpty ||
+              bio.isNotEmpty) &&
+          isStrongPassword(password)) {
         //register user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -115,4 +114,41 @@ class AuthMethods {
 
     return res;
   }
+}
+
+bool isStrongPassword(String password) {
+  // Шаг 1: Проверить длину пароля (от 6 до 20 символов)
+  if (password.length < 6 || password.length > 20) {
+    return false;
+  }
+
+  // Шаг 2: Проверить наличие больших и строчных букв
+  bool hasUpperCase = false;
+  bool hasLowerCase = false;
+
+  for (int i = 0; i < password.length; i++) {
+    if (password[i].toUpperCase() != password[i]) {
+      hasLowerCase = true;
+    } else if (password[i].toLowerCase() != password[i]) {
+      hasUpperCase = true;
+    }
+
+    // Если оба условия выполняются, можно прервать цикл, так как все условия уже проверены
+    if (hasUpperCase && hasLowerCase) {
+      break;
+    }
+  }
+
+  if (!hasUpperCase || !hasLowerCase) {
+    return false;
+  }
+
+  // Шаг 3: Проверить наличие пробелов и специальных знаков
+  RegExp specialChars = RegExp(r'[!@#%^&*(),.?":{}|<>]');
+  if (password.contains(' ') || specialChars.hasMatch(password)) {
+    return false;
+  }
+
+  // Если все условия выполнились, пароль считается сильным
+  return true;
 }
