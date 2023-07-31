@@ -19,7 +19,7 @@ class StandartButton extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       // width: 170,
-      height: 44,
+      height: 40,
       child: ElevatedButton(
         onPressed: function,
         style: ButtonStyle(
@@ -28,7 +28,7 @@ class StandartButton extends StatelessWidget {
             elevation: MaterialStateProperty.all(
                 0), //на скок высоко кнопка над плоскостью - ругулируется тенью
             padding: MaterialStateProperty.all(const EdgeInsets.only(
-                left: 15, right: 15, top: 13, bottom: 13)), // отступы от краев
+                left: 15, right: 15, top: 5, bottom: 5)), // отступы от краев
             minimumSize: MaterialStateProperty.all(const Size(140, 40)),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),

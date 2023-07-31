@@ -12,7 +12,7 @@ import '../responsive/mobail_sreen_layout.dart';
 import '../responsive/responsive_layout.dart';
 import '../responsive/web_screen_layout.dart';
 import '../utils/dimensions.dart';
-import '../utils/image_utils.dart';
+import '../utils/utils.dart';
 
 class SiginUpScreen extends StatefulWidget {
   const SiginUpScreen({super.key});

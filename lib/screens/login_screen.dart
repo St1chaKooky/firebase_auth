@@ -8,7 +8,7 @@ import 'package:netschool/screens/siginup_screen.dart';
 
 import 'package:netschool/utils/colors.dart';
 import 'package:netschool/utils/dimensions.dart';
-import 'package:netschool/utils/image_utils.dart';
+import 'package:netschool/utils/utils.dart';
 
 import 'package:netschool/widgets/text_field.dart';
 
@@ -37,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginUser() async {
+    if (!mounted) return;
     setState(() {
       _isLoginLoading = true;
     });

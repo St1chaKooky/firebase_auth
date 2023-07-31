@@ -3,9 +3,9 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:netschool/resources/storage_methods.dart';
 
 import '../model/user.dart' as model;
+import '../utils/utils.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -41,10 +41,10 @@ class AuthMethods {
         print(cred.user!.uid);
 
         String photoUrl = "https://i.stack.imgur.com/l60Hf.png";
-        if (file != null) {
-          photoUrl = await StorageMethods()
-              .uploadImageToStorage('profilePics', file, false);
-        }
+        // if (file != null) {
+        //   photoUrl = await StorageMethods()
+        //       .uploadImageToStorage('profilePics', file, false);
+        // }
 
         model.User user = model.User(
           username: username,
@@ -98,6 +98,7 @@ class AuthMethods {
 
   //GoogleAuntification
   Future<String> signGoogle() async {
+    List<String> existingNumbers = await getExistingNumbers();
     String res = "Some error occurred";
 
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -109,6 +110,26 @@ class AuthMethods {
         idToken: googleAuth.idToken,
       );
       await _auth.signInWithCredential(credential);
+      // Проверяем, есть ли у пользователя уже документ в Firestore
+      final userRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(_auth.currentUser!.uid);
+      final userSnapshot = await userRef.get();
+
+      if (!userSnapshot.exists) {
+        // Если документа еще нет (пользователь зарегистрировался впервые), создаем его с полями по умолчанию
+        await userRef.set({
+          "email": _auth.currentUser!.email,
+          "username": generateUniqueRandomNumber(
+              existingNumbers), // Значение по умолчанию для username
+          "bio": "Your text", // Значение по умолчанию для bio
+          "photoUrl":
+              "https://i.stack.imgur.com/l60Hf.png", // Пустое значение для поля photoUrl
+          "uid": _auth.currentUser!.uid,
+          "followers": [],
+          "following": [],
+        });
+      }
       res = "succes";
     }
 
