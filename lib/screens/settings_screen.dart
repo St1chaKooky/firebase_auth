@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netschool/resources/auth_methods.dart';
 import '../widgets/text_button.dart';
-import '../widgets/text_setting.dart';
 import 'login_screen.dart';
 
 class SettinsBar extends StatefulWidget {

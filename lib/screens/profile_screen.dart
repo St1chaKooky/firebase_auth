@@ -6,7 +6,6 @@ import 'package:netschool/screens/settings_screen.dart';
 import 'package:netschool/utils/colors.dart';
 
 import '../utils/utils.dart';
-import '../widgets/standart_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
