@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:netschool/screens/profile_screen.dart';
 // import 'package:provider/provider.dart';
 // import '../model/user.dart' as model;
-import '../screens/seacr_screen.dart';
 import '../utils/colors.dart';
 
 class MobailScreenLayout extends StatefulWidget {
@@ -57,13 +56,12 @@ class _MobailScreenLayoutState extends State<MobailScreenLayout> {
         controller: pageController,
         onPageChanged: onPageChanged,
         children: [
-          const Text(
-            'main',
-            style: TextStyle(fontFamily: 'WorkSans'),
+          const Center(
+            child: Text(
+              'Вы вошли в аккаунт',
+              style: TextStyle(fontFamily: 'WorkSans'),
+            ),
           ),
-          const SearchScreen(),
-          const Text('add'),
-          const Text('reels'),
           ProfileScreen(
             uid: FirebaseAuth.instance.currentUser!.uid,
           ),
@@ -82,32 +80,8 @@ class _MobailScreenLayoutState extends State<MobailScreenLayout> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.search,
+              Icons.home,
               color: _page == 1 ? blueColor : secondaryColor,
-            ),
-            label: '',
-            backgroundColor: Colors.blue,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add,
-              color: _page == 2 ? blueColor : secondaryColor,
-            ),
-            label: '',
-            backgroundColor: Colors.blue,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: _page == 3 ? blueColor : secondaryColor,
-            ),
-            label: '',
-            backgroundColor: Colors.blue,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: _page == 4 ? blueColor : secondaryColor,
             ),
             label: '',
             backgroundColor: Colors.blue,

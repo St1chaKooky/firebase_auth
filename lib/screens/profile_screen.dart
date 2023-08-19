@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:netschool/resources/auth_methods.dart';
-import 'package:netschool/screens/login_screen.dart';
+
+import 'package:netschool/screens/settings_screen.dart';
 
 import 'package:netschool/utils/colors.dart';
 
@@ -20,13 +20,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   var userData = {};
   int followers = 0;
   int following = 0;
+  String bio = " ";
+  String username = " ";
+
   bool isFollowing = false;
   bool isLoading = false;
 
   @override
   void initState() {
-    super.initState();
     getData();
+
+    super.initState();
   }
 
   getData() async {
@@ -38,14 +42,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .collection('users')
           .doc(widget.uid)
           .get();
-
       if (userSnap.exists) {
         var data = userSnap.data();
         if (data != null) {
           userData = data;
           followers = data['followers']?.length ?? 0;
           following = data['following']?.length ?? 0;
-          setState(() {});
+          bio = data['bio'] ?? " ";
+          username = data['username'] ?? " ";
         } else {
           showSnackBar('User data is null.', context);
         }
@@ -77,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             appBar: AppBar(
               elevation: 0,
               title: Text(
-                userData['bio'],
+                bio,
                 style: const TextStyle(color: Colors.black),
               ),
               centerTitle: true,
@@ -91,9 +95,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               BorderRadius.vertical(top: Radius.circular(25))),
                       context: context,
                       builder: (BuildContext context) {
-                        return const SizedBox(
-                          height: 600,
-                          child: Column(),
+                        return SizedBox(
+                          // height: 600,
+                          child: SettinsBar(),
                         );
                       },
                     );
@@ -124,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 15,
                       ),
                       Text(
-                        '@${userData['username'] ?? ''}',
+                        '@$username',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -142,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           Expanded(
                             child: buildStatColumn(
-                              10,
+                              0,
                               'posts',
                             ),
                           ),
@@ -163,33 +167,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(
                         height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          StandartButton(
-                            text: 'Выйти из аккаунта',
-                            backgroundColor: greyButtonColor,
-                            textColor: greyButtonColorText,
-                            function: () async {
-                              await AuthMethods().signOut();
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => const LoginScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          StandartButton(
-                            text: 'Изменить профиль',
-                            backgroundColor: greyButtonColor,
-                            textColor: greyButtonColorText,
-                            function: () {},
-                          ),
-                        ],
                       ),
                     ],
                   ),
@@ -215,7 +192,7 @@ Column buildStatColumn(int num, String label) {
         label,
         style: const TextStyle(
           fontSize: 13,
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w300,
           color: mobileSearchColor,
         ),
       ),

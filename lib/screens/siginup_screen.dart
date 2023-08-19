@@ -1,13 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
 import 'package:netschool/resources/auth_methods.dart';
 import 'package:netschool/screens/login_screen.dart';
 import 'package:netschool/utils/colors.dart';
 import 'package:netschool/widgets/text_field.dart';
-import 'package:flutter/services.dart';
-
 import '../responsive/mobail_sreen_layout.dart';
 import '../responsive/responsive_layout.dart';
 import '../responsive/web_screen_layout.dart';
@@ -26,7 +21,6 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
-  // Uint8List? _image;
   bool _isLoginLoading = false;
   bool _isGoogleLoginLoading = false;
 
@@ -84,21 +78,8 @@ class _SiginUpScreenState extends State<SiginUpScreen> {
         );
       }
     } catch (e) {
-      // Возникло исключение, обработаем различные типы ошибок.
-      if (e is PlatformException) {
-        // Это исключение PlatformException, например, из-за отмены входа через Google.
-        showSnackBar("Вход через Google отменен", context);
-      } else if (e is SocketException) {
-        // Это исключение SocketException, возникает при проблемах с сетью.
-        showSnackBar(
-            "Ошибка сети. Проверьте подключение к интернету.", context);
-      } else {
-        // Это другое исключение, которое мы не предвидим. Обработайте его по своему усмотрению.
-        showSnackBar(
-            "Произошла непредвиденная ошибка. Повторите попытку позже.",
-            context);
-      }
-      // Можно также добавить блок catch для других типов исключений, если необходимо.
+      if (!mounted) return;
+      showSnackBar("Вход через Google отменен", context);
     }
 
     setState(() {

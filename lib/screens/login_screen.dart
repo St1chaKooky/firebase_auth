@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -79,21 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } catch (e) {
-      // Возникло исключение, обработаем различные типы ошибок.
-      if (e is PlatformException) {
-        // Это исключение PlatformException, например, из-за отмены входа через Google.
-        showSnackBar("Вход через Google отменен", context);
-      } else if (e is SocketException) {
-        // Это исключение SocketException, возникает при проблемах с сетью.
-        showSnackBar(
-            "Ошибка сети. Проверьте подключение к интернету.", context);
-      } else {
-        // Это другое исключение, которое мы не предвидим. Обработайте его по своему усмотрению.
-        showSnackBar(
-            "Произошла непредвиденная ошибка. Повторите попытку позже.",
-            context);
-      }
-      // Можно также добавить блок catch для других типов исключений, если необходимо.
+      if (!mounted) return;
+      showSnackBar("Вход через Google отменен", context);
     }
 
     setState(() {
